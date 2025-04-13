@@ -18,6 +18,9 @@ import {
 } from '@/components/ui/select';
 import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { addAsyncItem, updateAsyncItem } from '@/features/item/ItemSlice';
+import { AppDispatch } from '@/store/store';
 
 const ItemDialog: React.FC<ItemDialogProps> = ({
   open,
@@ -34,21 +37,18 @@ const ItemDialog: React.FC<ItemDialogProps> = ({
     defaultValues: {
       title: selectedItem?.title || '',
       category: selectedItem?.category || '',
-      date: selectedItem?.date?.split('T')[0] || new Date().toISOString().split("T")[0], 
-      price: selectedItem?.price, 
-      description: selectedItem?.description || '', 
+      date:
+        selectedItem?.date?.split('T')[0] ||
+        new Date().toISOString().split('T')[0],
+      price: selectedItem?.price,
+      description: selectedItem?.description || '',
       stock: selectedItem?.stock,
-      rating: selectedItem?.rating, 
+      rating: selectedItem?.rating,
     },
   });
+  const dispatch = useDispatch<AppDispatch>();
 
-  const onSubmit = (data: Item) => {
-    const transformedData = {
-      ...data,
-      date: data.date ? new Date(data.date).toISOString() : '', 
-    };
-    console.log(transformedData);
-  };
+  
   useEffect(() => {
     if (!open) {
       reset(); // ریست کامل فرم و پاک کردن ارورها
@@ -63,6 +63,23 @@ const ItemDialog: React.FC<ItemDialogProps> = ({
     }
   }, [open, selectedItem, reset]);
 
+
+
+
+  const onSubmit = async (data: Item) => {
+    const transformedData = {
+      ...data,
+      date: new Date(data.date).toISOString(),
+    };
+    if (selectedItem) {
+      await dispatch(updateAsyncItem(transformedData)); 
+      onOpenChange(false);
+
+    } else {
+      await dispatch(addAsyncItem(transformedData));
+      onOpenChange(false);
+    }
+  };
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">

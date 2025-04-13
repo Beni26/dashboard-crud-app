@@ -15,3 +15,8 @@ export interface ItemDialogProps {
   selectedItem?: Item | null; 
 
 }
+export interface ConfirmDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void
+  itemId: number;
+}

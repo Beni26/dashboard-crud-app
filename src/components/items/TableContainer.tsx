@@ -29,7 +29,7 @@ const TableContainer = () => {
   return (
     <div>
       <div className="flex justify-end">
-        <Button className='cursor-pointer' onClick={() => setDialogOpen(true)}>
+        <Button className="cursor-pointer" onClick={() => setDialogOpen(true)}>
           <Plus />
           Add new
         </Button>
