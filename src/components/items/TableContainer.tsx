@@ -16,15 +16,20 @@ import { Skeleton } from '../ui/skeleton';
 import { Button } from '../ui/button';
 import ItemDialog from './ItemDialog';
 import { Plus } from 'lucide-react';
+import PaginationItems from './PaginationItems';
 
 const TableContainer = () => {
-  const { items, loading } = useSelector((state: RootState) => state.items);
+  const { items, loading ,total} = useSelector((state: RootState) => state.items);
   const dispatch = useDispatch<AppDispatch>();
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  const limit = 5;
+  const totalPages = Math.ceil(total / limit);
+
 
   useEffect(() => {
-    dispatch(getAsyncItems());
-  }, [dispatch]);
+    dispatch(getAsyncItems({ page, limit }));
+  }, [dispatch, page]);
 
   return (
     <div>
@@ -71,7 +76,8 @@ const TableContainer = () => {
           </TableBody>
         </Table>
       </div>
-      <ItemDialog open={dialogOpen} onOpenChange={setDialogOpen} />
+      <PaginationItems totalPages={totalPages} currentPage={page} onPageChange={setPage} />
+      <ItemDialog open={dialogOpen} onOpenChange={setDialogOpen} onPageChange={setPage} />
     </div>
   );
 };

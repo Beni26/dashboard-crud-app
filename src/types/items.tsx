@@ -13,10 +13,18 @@ export interface ItemDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   selectedItem?: Item | null; 
+  onPageChange?: (page: number) => void;
+
 
 }
 export interface ConfirmDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void
   itemId: number;
+}
+
+export interface PaginationItemsProps {
+  totalPages: number;
+  currentPage: number;
+  onPageChange: (page: number) => void;
 }

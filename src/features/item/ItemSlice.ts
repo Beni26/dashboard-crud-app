@@ -4,11 +4,17 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 
 
-export const getAsyncItems = createAsyncThunk("items/getAsyncItems",async(_,{rejectWithValue})=>{
+export const getAsyncItems = createAsyncThunk("items/getAsyncItems",  async (
+  { page, limit }: { page: number; limit: number },
+  { rejectWithValue }
+) => {
     try {
-        const response = await http.get("items");
-        return response.data
-    } catch (error: unknown) {
+      const response = await http.get(`/items?_page=${page}&_limit=${limit}`);
+        return {
+          data: response.data,
+          total: Number(response.headers["x-total-count"]),
+        };
+   } catch (error: unknown) {
       if (error instanceof Error) {
         return rejectWithValue(error.message);
       } else {
@@ -73,16 +79,41 @@ export const deleteAsyncItem = createAsyncThunk(
 );
 
 
+export const searchAsyncItems = createAsyncThunk(
+  "items/searchAsyncItems",
+  async (
+    { search, limit }: { search: string; limit: number },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await http.get(`/items?_limit=${limit}&title_like=${search}`);
+      return {
+        data: response.data,
+        total: Number(response.headers["x-total-count"]),
+      };
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      } else {
+        return rejectWithValue("An unknown error occurred");
+      }
+    }
+  }
+);
+
 interface ItemState {
     loading: boolean;
     items: any[]; 
     error: string;
+    total: number; // تعداد کل آیتم‌ها برای محاسبه تعداد صفحات
+
   }
   
   const initialState: ItemState = {
     loading: false,
     items: [],
-    error: ""
+    error: "",
+    total:0,
   };
   
   const itemsSlice = createSlice({
@@ -98,7 +129,8 @@ interface ItemState {
         })
         .addCase(getAsyncItems.fulfilled, (state, action) => {
           state.loading = false;
-          state.items = action.payload;
+          state.items = action.payload.data;
+          state.total = action.payload.total;
           state.error = "";
 
         })
@@ -160,6 +192,27 @@ interface ItemState {
           state.error = "";
         })
         .addCase(deleteAsyncItem.rejected, (state, action) => {
+          state.loading = false;
+          state.error = action.payload as string;
+        });
+
+
+
+
+        builder
+        .addCase(searchAsyncItems.pending, (state) => {
+          state.loading = true;
+          state.items = [];
+          state.error = "";
+        })
+        .addCase(searchAsyncItems.fulfilled, (state, action) => {
+          state.loading = false;
+          state.items = action.payload.data;
+          state.total = action.payload.total;
+          state.error = "";
+
+        })
+        .addCase(searchAsyncItems.rejected, (state, action) => {
           state.loading = false;
           state.error = action.payload as string;
         });

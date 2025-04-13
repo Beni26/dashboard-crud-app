@@ -26,6 +26,7 @@ const ItemDialog: React.FC<ItemDialogProps> = ({
   open,
   onOpenChange,
   selectedItem,
+  onPageChange,
 }) => {
   const {
     register,
@@ -77,6 +78,7 @@ const ItemDialog: React.FC<ItemDialogProps> = ({
 
     } else {
       await dispatch(addAsyncItem(transformedData));
+      onPageChange?.(1);
       onOpenChange(false);
     }
   };
