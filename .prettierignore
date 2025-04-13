@@ -1,0 +1,24 @@
+# پوشه‌های بی‌نیاز به فرمت
+node_modules
+dist
+build
+coverage
+
+# تنظیمات محیط
+.env
+.env.*    
+
+# فایل خروجی Vite
+*.lock
+
+# فایل‌های خروجی از Docker یا CI/CD
+docker-compose.*
+Dockerfile
+
+# فایل‌هایی که معمولاً فرمت نمی‌خوان
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# VSCode config files
+.vscode
