@@ -1,5 +1,5 @@
 export interface Item {
-  id: number;
+  id?: number;
   title: string;
   category: string;
   date: string; 
@@ -12,6 +12,6 @@ export interface Item {
 export interface ItemDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  selectedItem: Item | null; 
+  selectedItem?: Item | null; 
 
 }
