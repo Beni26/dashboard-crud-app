@@ -4,24 +4,46 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 
 
-export const getAsyncItems = createAsyncThunk("items/getAsyncItems",  async (
-  { page, limit }: { page: number; limit: number },
-  { rejectWithValue }
-) => {
+export const getAsyncItems = createAsyncThunk(
+  "items/getAsyncItems",
+  async (
+    {
+      page,
+      limit,
+      sortBy = "date",
+      orderBy = "desc",
+      category,
+    }: {
+      page: number;
+      limit: number;
+      sortBy?: string;
+      orderBy?: "asc" | "desc";
+      category?: string;
+    },
+    { rejectWithValue }
+  ) => {
     try {
-      const response = await http.get(`/items?_page=${page}&_limit=${limit}`);
-        return {
-          data: response.data,
-          total: Number(response.headers["x-total-count"]),
-        };
-   } catch (error: unknown) {
+      let query = `/items?_page=${page}&_limit=${limit}&_sort=${sortBy}&_order=${orderBy}`;
+      if (category && category !== "All") {
+        query += `&category=${category}`;
+      }
+      const response = await http.get(query);
+
+      return {
+        data: response.data,
+        total: Number(response.headers["x-total-count"]),
+      };
+    } catch (error: unknown) {
       if (error instanceof Error) {
         return rejectWithValue(error.message);
       } else {
         return rejectWithValue("An unknown error occurred");
       }
     }
-})
+  }
+);
+
+
 export const addAsyncItem = createAsyncThunk<Item,Item>("item/addAsyncItems",async(payload,{rejectWithValue})=>{
   try {
     const response = await http.post("items",payload);
