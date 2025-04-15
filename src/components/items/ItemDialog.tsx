@@ -21,6 +21,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { addAsyncItem, updateAsyncItem } from '@/features/item/ItemSlice';
 import { AppDispatch } from '@/store/store';
+import { DialogDescription } from '@radix-ui/react-dialog';
 
 const ItemDialog: React.FC<ItemDialogProps> = ({
   open,
@@ -49,23 +50,19 @@ const ItemDialog: React.FC<ItemDialogProps> = ({
   });
   const dispatch = useDispatch<AppDispatch>();
 
-  
   useEffect(() => {
     if (!open) {
-      reset(); // ریست کامل فرم و پاک کردن ارورها
+      reset(); 
     } else if (selectedItem) {
       const transformed = {
         ...selectedItem,
         date: selectedItem.date?.split('T')[0],
       };
-      reset(transformed); // اگر در حالت ویرایش هستیم، مقادیر رو بذار
+      reset(transformed); 
     } else {
-      reset(); // اگر فرم برای افزودنه، مقادیر خالی بذار
+      reset(); 
     }
   }, [open, selectedItem, reset]);
-
-
-
 
   const onSubmit = async (data: Item) => {
     const transformedData = {
@@ -73,9 +70,8 @@ const ItemDialog: React.FC<ItemDialogProps> = ({
       date: new Date(data.date).toISOString(),
     };
     if (selectedItem) {
-      await dispatch(updateAsyncItem(transformedData)); 
+      await dispatch(updateAsyncItem(transformedData));
       onOpenChange(false);
-
     } else {
       await dispatch(addAsyncItem(transformedData));
       onPageChange?.(1);
@@ -84,26 +80,36 @@ const ItemDialog: React.FC<ItemDialogProps> = ({
   };
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent
+        className="sm:max-w-[425px]"
+        aria-describedby="item-dialog-description"
+      >
         <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
+          <DialogTitle>{selectedItem ? 'Edit item' : 'Add item'}</DialogTitle>
         </DialogHeader>
+        <DialogDescription id="item-dialog-description">
+          Fill out the form to {selectedItem ? 'edit' : 'add'} an item.
+        </DialogDescription>
         <form className="space-y-2" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-2">
-            <Label>Title</Label>
-            <Input {...register('title', { required: 'Title is required' })} />
+            <Label htmlFor="title-input">title</Label>
+            <Input
+              id="title-input"
+              {...register('title', { required: 'Title is required' })}
+            />
             {errors.title && (
-              <p className="text-red-500 text-xs ">{errors.title.message}</p>
+              <p className="text-red-500 text-xs">{errors.title.message}</p>
             )}
           </div>
+
           <div className="flex flex-col gap-2">
-            <Label>category</Label>
+            <Label htmlFor="category-input">category</Label>
             <Select
               defaultValue={selectedItem?.category || ''}
-              {...register('category', { required: 'Category is required' })} // استفاده از register با required
+              {...register('category', { required: 'Category is required' })}
               onValueChange={(value) => setValue('category', value)}
             >
-              <SelectTrigger className="w-full">
+              <SelectTrigger className="w-full" data-testid="category-input">
                 <SelectValue placeholder="Choose a category" />
               </SelectTrigger>
               <SelectContent>
@@ -120,9 +126,11 @@ const ItemDialog: React.FC<ItemDialogProps> = ({
               <p className="text-red-500 text-xs">{errors.category.message}</p>
             )}
           </div>
+
           <div className="flex flex-col gap-2">
-            <Label>date</Label>
+            <Label htmlFor="date-input">date</Label>
             <Input
+              id="date-input"
               type="date"
               className="w-full inline"
               {...register('date', { required: 'Date is required' })}
@@ -131,9 +139,11 @@ const ItemDialog: React.FC<ItemDialogProps> = ({
               <p className="text-red-500 text-xs">{errors.date.message}</p>
             )}
           </div>
+
           <div className="flex flex-col gap-2">
-            <Label>price</Label>
+            <Label htmlFor="price-input">price</Label>
             <Input
+              id="price-input"
               {...register('price', {
                 required: 'Price is required',
                 valueAsNumber: true,
@@ -143,9 +153,11 @@ const ItemDialog: React.FC<ItemDialogProps> = ({
               <p className="text-red-500 text-xs">{errors.price.message}</p>
             )}
           </div>
+
           <div className="flex flex-col gap-2">
-            <Label>description</Label>
+            <Label htmlFor="description-input">description</Label>
             <Input
+              id="description-input"
               {...register('description', {
                 required: 'Description is required',
               })}
@@ -156,9 +168,11 @@ const ItemDialog: React.FC<ItemDialogProps> = ({
               </p>
             )}
           </div>
+
           <div className="flex flex-col gap-2">
-            <Label>stock</Label>
+            <Label htmlFor="stock-input">stock</Label>
             <Input
+              id="stock-input"
               {...register('stock', {
                 required: 'Stock is required',
                 valueAsNumber: true,
@@ -168,9 +182,11 @@ const ItemDialog: React.FC<ItemDialogProps> = ({
               <p className="text-red-500 text-xs">{errors.stock.message}</p>
             )}
           </div>
+
           <div className="flex flex-col gap-2">
-            <Label>rating</Label>
+            <Label htmlFor="rating-input">rating</Label>
             <Input
+              id="rating-input"
               {...register('rating', {
                 required: 'Rating is required',
                 valueAsNumber: true,
@@ -183,7 +199,7 @@ const ItemDialog: React.FC<ItemDialogProps> = ({
 
           <DialogFooter>
             <Button type="submit" className="w-full cursor-pointer">
-              {selectedItem ? 'Edit item' : ' Add item'}
+              {selectedItem ? 'Edit item' : 'Add item'}
             </Button>
           </DialogFooter>
         </form>

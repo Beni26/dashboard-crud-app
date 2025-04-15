@@ -28,15 +28,15 @@ const TableData: React.FC<Props> = ({ items }) => {
 
   return (
     <>
-      {items.map((item) => (
-        <TableRow key={item.id}>
-          <TableCell>{item.id}</TableCell>
+      {items.map((item,index) => (
+        <TableRow key={item.id} >
+          <TableCell >{index+1}</TableCell>
           <TableCell>{item.title}</TableCell>
           <TableCell>{item.category}</TableCell>
           <TableCell>{item.date.split('T')[0]}</TableCell>
           <TableCell>{item.price} $</TableCell>
           <TableCell title={item.description}>
-            {truncateText('A smooth and responsive wireless mouse.', 15)}
+            {truncateText(item.description, 15)}
           </TableCell>
           <TableCell>{item.stock}</TableCell>
           <TableCell>{item.rating}</TableCell>

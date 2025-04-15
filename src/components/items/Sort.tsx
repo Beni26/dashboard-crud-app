@@ -190,7 +190,6 @@ const Sort = ({ sortOption, setSortOption,setCategoryFilter }: SortProps) => {
             </Button>
           </div>
         </div>
-        ch
       </div>
 
       <div className="space-y-1">
