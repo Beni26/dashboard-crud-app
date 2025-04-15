@@ -72,7 +72,7 @@ const TableContainer = ({ page, limit, setPage }: TableContainerProps) => {
                 </TableRow>
               </>
             ) : (
-              <TableData items={items} />
+              <TableData items={items} limit={limit} page={page}/>
             )}
           </TableBody>
         </Table>

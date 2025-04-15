@@ -1,5 +1,5 @@
 import { TableCell, TableRow } from '@/components/ui/table';
-import { Item } from '@/types/items';
+import { Item, TableDataProps } from '@/types/items';
 import truncateText from '@/utils/truncateText';
 import { Button } from '../ui/button';
 import { Pencil, Trash2 } from 'lucide-react';
@@ -7,11 +7,8 @@ import ItemDialog from './ItemDialog';
 import { useState } from 'react';
 import ConfirmDialog from './ConfirmDialog';
 
-interface Props {
-  items: Item[];
-}
 
-const TableData: React.FC<Props> = ({ items }) => {
+const TableData: React.FC<TableDataProps> = ({ items, page, limit }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogConfirm, setDialogConfirm] = useState(false);
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
@@ -28,9 +25,9 @@ const TableData: React.FC<Props> = ({ items }) => {
 
   return (
     <>
-      {items.map((item,index) => (
-        <TableRow key={item.id} >
-          <TableCell >{index+1}</TableCell>
+      {items.map((item, index) => (
+        <TableRow key={item.id}>
+          <TableCell>{index + 1 + (page - 1) * limit}</TableCell>
           <TableCell>{item.title}</TableCell>
           <TableCell>{item.category}</TableCell>
           <TableCell>{item.date.split('T')[0]}</TableCell>

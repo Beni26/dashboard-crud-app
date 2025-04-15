@@ -29,3 +29,8 @@ export interface PaginationItemsProps {
   currentPage: number;
   onPageChange: (page: number) => void;
 }
+export interface TableDataProps {
+  items: Item[];
+  page: number;
+  limit: number;
+}
