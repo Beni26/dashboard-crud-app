@@ -5,7 +5,6 @@ import axios from "axios";
 export const BASE_URL = "https://mock-api-json-server-xa2e.onrender.com/";
 const app = axios.create({
     baseURL:BASE_URL,
-    // withCredentials:true,
 })
 
 const http = {

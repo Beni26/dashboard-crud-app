@@ -1,54 +1,87 @@
-# React + TypeScript + Vite
+# Dashboard CRUD App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A complete CRUD dashboard app built with React, TypeScript, Vite, and Redux Toolkit.
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- View a list of items in a table
+- Add, edit, and delete items
+- Search and filter items by category
+- Sort by date or price
+- Pagination support
+- Modal forms using `react-hook-form`
+- Responsive design with Tailwind CSS and ShadCN UI
+- Dark mode support
+- State management with Redux Toolkit
+- Notifications with `react-toastify`
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## 🛠️ Technologies Used
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- [React](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vitejs.dev/)
+- [Redux Toolkit](https://redux-toolkit.js.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [ShadCN UI](https://ui.shadcn.dev/)
+- [Lucide Icons](https://lucide.dev/)
+- [React Hook Form](https://react-hook-form.com/)
+- [React Toastify](https://github.com/fkhadra/react-toastify#readme)
+- [Vitest](https://vitest.dev/) 
+- [Axios](https://axios-http.com/) - For making HTTP requests
+- [React Router](https://reactrouter.com/) - For handling routing in the application
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## 🚀 Installation and Setup
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/Beni26/dashboard-crud-app.git
+   cd dashboard-crud-app
+
+
+2.Install dependencies:
+
+  npm install
+
+3.Run the project:
+  npm run dev
+
+
+
+## 📦 API
+
+This project uses a mock API hosted on **[Render](https://render.com/)** using **JSON Server**. You can interact with the following endpoints:
+
+- **GET /items** - Get a list of all items
+- **POST /items** - Add a new item
+- **PUT /items/:id** - Update an item by ID
+- **DELETE /items/:id** - Delete an item by ID
+
+### API URL:
+
+You can make requests to the API at the following URL:
+
+[https://mock-api-json-server-xa2e.onrender.com/]
+### Example Requests:
+
+- **Get All Items**:
+  ```bash
+  curl https://mock-api-json-server-xa2e.onrender.com/items
+
+
+
+🗂️ Folder Structure
+  src/
+  ├── components/
+  │   ├── items/
+  │   └── ui/
+  ├── features/
+  │   └── item/
+  ├── store/
+  ├── types/
+  └── utils/
+
+
