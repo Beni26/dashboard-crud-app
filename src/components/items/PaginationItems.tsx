@@ -15,8 +15,34 @@ const PaginationItems: React.FC<PaginationItemsProps> = ({
 }) => {
   const renderPageNumbers = () => {
     const pages = [];
-
-    for (let i = 1; i <= totalPages; i++) {
+    const pageLimit = 2; 
+  
+    const startPage = Math.max(2, currentPage - pageLimit);
+    const endPage = Math.min(totalPages - 1, currentPage + pageLimit);
+  
+    // صفحه 1
+    pages.push(
+      <PaginationItem key={1}>
+        <PaginationLink
+          href="#"
+          isActive={currentPage === 1}
+          onClick={(e) => {
+            e.preventDefault();
+            onPageChange(1);
+          }}
+        >
+          1
+        </PaginationLink>
+      </PaginationItem>
+    );
+  
+    // نقطه‌چین قبل
+    if (startPage > 2) {
+      pages.push(<PaginationItem key="start-ellipsis">...</PaginationItem>);
+    }
+  
+    // صفحات وسط
+    for (let i = startPage; i <= endPage; i++) {
       pages.push(
         <PaginationItem key={i}>
           <PaginationLink
@@ -29,9 +55,33 @@ const PaginationItems: React.FC<PaginationItemsProps> = ({
           >
             {i}
           </PaginationLink>
-        </PaginationItem>,
+        </PaginationItem>
       );
     }
+  
+    // نقطه‌چین بعد
+    if (endPage < totalPages - 1) {
+      pages.push(<PaginationItem key="end-ellipsis">...</PaginationItem>);
+    }
+  
+    // صفحه آخر
+    if (totalPages > 1) {
+      pages.push(
+        <PaginationItem key={totalPages}>
+          <PaginationLink
+            href="#"
+            isActive={currentPage === totalPages}
+            onClick={(e) => {
+              e.preventDefault();
+              onPageChange(totalPages);
+            }}
+          >
+            {totalPages}
+          </PaginationLink>
+        </PaginationItem>
+      );
+    }
+  
     return pages;
   };
 

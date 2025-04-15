@@ -47,6 +47,7 @@ A complete CRUD dashboard app built with React, TypeScript, Vite, and Redux Tool
   npm install
 
 3.Run the project:
+
   npm run dev
 
 
